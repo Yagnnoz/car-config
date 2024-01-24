@@ -3,7 +3,7 @@
 <div class="form-container">
   <label for="model">Model:</label>
   <select id="model">
-    <option>Model 3</option>
+    <option *ngFor="let model of models | async">{{model.code}}</option>
   </select>
   <label for="color">Color:</label>
   <select id="color">
