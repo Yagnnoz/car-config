@@ -16,15 +16,14 @@ export class ModelService {
     this.models$ = this.http.get<CarModel[]>('/models');
   }
 
-  // getModelColors(code: string): Observable<ModelColor[]> {
-  //   console.log('code is: ', code);
-  //   return this.http.get<CarModel[]>('/models').pipe(
-  //     map(models => {
-  //         const model = models.find(model => model.code === code);
-  //       console.log('found model: ', model);
-  //         return model ? model.colors : [] as ModelColor[];
-  //       }),
-  //     take(1),
-  //   );
-  // }
+  getModelColors(code: string): Observable<ModelColor[]> {
+    console.log('code is: ', code);
+    return this.http.get<CarModel[]>('/models').pipe(
+      map(models => {
+          const model = models.find(model => model.code === code);
+        console.log('found model: ', model);
+          return model ? model.colors : [] as ModelColor[];
+        }),
+    );
+  }
 }
