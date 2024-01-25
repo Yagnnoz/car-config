@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from "rxjs";
-import { CommonModule } from "@angular/common";
-import { CarModel, ModelColor } from "../../types/car-model.type";
-import { ModelService } from "../../services/model.service";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { ModelSelectCustomForm } from "../../forms/model-select.form";
-import { ModelSelectService } from "../../services/model-select.service";
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { CarModel, ModelColor } from '../../types/car-model.type';
+import { ModelService } from '../../services/model.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-model-select',
@@ -17,27 +15,30 @@ import { ModelSelectService } from "../../services/model-select.service";
 export class ModelSelectComponent implements OnInit, OnDestroy {
 
   models?: Observable<CarModel[]>;
-  colors?: Observable<ModelColor[]>;
+  colors: ModelColor[] = [];
 
-  form!: ModelSelectCustomForm;
+  selectedModel: CarModel = {} as CarModel;
+  selectedColor?: ModelColor;
 
   constructor(
     private readonly modelService: ModelService,
-    private readonly modelFormService: ModelSelectService,
   ) {
   }
 
   ngOnInit() {
-    this.form = this.modelFormService.getForm();
     this.models = this.modelService.models$;
-
-    this.modelFormService.getLatestValueChanges().subscribe(value => {
-      this.modelService.getModelColors(value.model);
-    })
+    // this.colors = this.modelService.carColors$;
 
   }
 
-  refreshColors() {
+  modelChange(selectedModel: CarModel): void {
+    // if (this.selectedModel) {
+    //   this.modelService.getModelColors(this.selectedModel).pipe(
+    //     take(1),
+    //   ).subscribe();
+    // }
+    console.info(typeof selectedModel);
+    this.colors = selectedModel.colors;
   }
 
   ngOnDestroy() {
