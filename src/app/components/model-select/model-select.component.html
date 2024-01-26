@@ -7,7 +7,7 @@
     [(ngModel)]="selectedModel"
     id="modelSelect">
 
-    <option *ngFor="let model of models$ | async" [value]="model.code">{{ model.code }}</option>
+    <option *ngFor="let model of allModels$ | async" [value]="model.code">{{ model.code }}</option>
   </select>
 
   <label for="colorSelect">Color:</label>
@@ -16,7 +16,7 @@
     (change)="colorChange()"
     id="colorSelect">
 
-    <option *ngFor="let color of color$ | async" [value]="color.code">{{ color.description }}</option>
+    <option *ngFor="let color of availableColors$ | async" [value]="color.code">{{ color.description }}</option>
   </select>
 
   <img [src]="url"/>

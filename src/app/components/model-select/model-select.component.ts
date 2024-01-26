@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, switchMap, take } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { CarModel, ModelColor } from '../../types/car-model.type';
 import { ModelService } from '../../services/model.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ValidButtonsService } from "../../services/valid-buttons.service";
+import { ValidButtonsService } from '../../services/valid-buttons.service';
+import { CarStoreService } from '../../services/car-store.service';
 
 @Component({
   selector: 'app-model-select',
@@ -13,13 +14,11 @@ import { ValidButtonsService } from "../../services/valid-buttons.service";
   templateUrl: './model-select.component.html',
   styleUrl: './model-select.component.scss',
 })
-export class ModelSelectComponent implements OnInit, OnDestroy {
+export class ModelSelectComponent implements OnInit {
 
-  models$?: Observable<CarModel[]>;
+  allModels$?: Observable<CarModel[]>;
 
-  selectedModel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-
-  color$!: Observable<ModelColor[]>;
+  availableColors$!: Observable<ModelColor[]>;
 
   url: string = '';
 
@@ -29,18 +28,15 @@ export class ModelSelectComponent implements OnInit, OnDestroy {
   constructor(
     private readonly modelService: ModelService,
     private readonly buttonActiveService: ValidButtonsService,
+    private readonly storeService: CarStoreService,
   ) {
   }
 
   ngOnInit() {
-    this.models$ = this.modelService.models$;
-    this.color$ = this.selectedModel$.pipe(
+    this.allModels$ = this.modelService.models$;
+    this.availableColors$ = this.storeService.selectedCarModel$.pipe(
       switchMap(modelCode => this.modelService.getModelColors(modelCode))
     )
-
-    this.modelService.getOptionsForCarModel('Y').pipe(
-      take(1)
-    ).subscribe();
   }
 
   colorChange() {
@@ -54,10 +50,8 @@ export class ModelSelectComponent implements OnInit, OnDestroy {
   }
 
   modelChange(selectedModel: string): void {
-    this.selectedModel$.next(selectedModel);
+    this.storeService.selectedCarModel$.next(selectedModel);
     this.colorChange();
   }
 
-  ngOnDestroy() {
-  }
 }

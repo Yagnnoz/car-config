@@ -9,11 +9,9 @@ import { CarOptions } from '../types/car-options.type';
 })
 export class ModelService {
 
-
   models$?: Observable<CarModel[]>;
 
   constructor(private http: HttpClient) {
-
     this.models$ = this.http.get<CarModel[]>('/models');
   }
 
