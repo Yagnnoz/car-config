@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap, take } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { CarModel, ModelColor } from '../../types/car-model.type';
 import { ModelService } from '../../services/model.service';
@@ -37,6 +37,10 @@ export class ModelSelectComponent implements OnInit, OnDestroy {
     this.color$ = this.selectedModel$.pipe(
       switchMap(modelCode => this.modelService.getModelColors(modelCode))
     )
+
+    this.modelService.getOptionsForCarModel('Y').pipe(
+      take(1)
+    ).subscribe();
   }
 
   colorChange() {
