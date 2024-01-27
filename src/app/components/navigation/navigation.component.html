@@ -1,5 +1,29 @@
 <div class="button-container">
-  <button type="button">Step 1</button>
-  <button type="button">Step 2</button>
-  <button type="button">Step 3</button>
+  <button
+    type="button"
+    routerLink="/model"
+    id="step1"
+  >
+    Step 1
+  </button>
+
+  <button
+    type="button"
+    [ngClass]="(step2Active$ | async) ? '':'disabled'"
+    [disabled]="(step2Active$ | async) == false"
+    routerLink="/config"
+    id="step2"
+  >
+    Step 2
+  </button>
+
+  <button
+    type="button"
+    [ngClass]="(step3Active$ | async) ? '':'disabled'"
+    [disabled]="(step3Active$ | async) == false"
+    routerLink="/summary"
+    id="step3"
+  >
+    Step 3
+  </button>
 </div>
