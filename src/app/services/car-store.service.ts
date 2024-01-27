@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable, ReplaySubject, take, tap } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, take } from 'rxjs';
 import { ModelSelection } from "../types/car-model.type";
 import { ModelService } from "./model.service";
 import { ConfigurationSelection } from "../types/car-options.type";

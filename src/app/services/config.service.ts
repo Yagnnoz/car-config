@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CarConfig, CarOptions, ConfigurationSelection } from '../types/car-options.type';
-import { combineLatest, map, NEVER, Observable, Subscription, switchMap } from 'rxjs';
+import { map, NEVER, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { CarStoreService } from "./car-store.service";
 
 @Injectable({
   providedIn: 'root'

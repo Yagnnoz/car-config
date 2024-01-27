@@ -75,6 +75,4 @@ export class ModelConfigComponent implements OnDestroy {
   ngOnDestroy() {
     this.carModelSub.unsubscribe();
   }
-
-
 }

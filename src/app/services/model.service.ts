@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { CarModel, ModelColor, ModelSelection } from '../types/car-model.type';
-import { CarOptions } from '../types/car-options.type';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +18,6 @@ export class ModelService {
     return this.http.get<CarModel[]>('/models').pipe(
       map(models => {
         const model = models.find(model => model.code === code);
-        console.log('found model: ', model);
         return model ? model.colors : [] as ModelColor[];
       }),
     );
@@ -40,12 +38,5 @@ export class ModelService {
         return result;
       })
     )
-  }
-
-
-  getOptionsForCarModel(code: string): Observable<CarOptions> {
-    return this.http.get<CarOptions>(`/options/${code}`).pipe(
-      tap(console.log),
-    );
   }
 }
