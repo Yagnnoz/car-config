@@ -33,6 +33,7 @@ export class ModelSelectComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.storeService.resetConfiguration();
     this.allModels$ = this.modelService.models$;
     this.availableColors$ = this.storeService.selectedCarModel$.pipe(
       switchMap(modelCode => this.modelService.getModelColors(modelCode))
@@ -41,6 +42,7 @@ export class ModelSelectComponent implements OnInit {
 
   colorChange() {
     if (this.selectedModel && this.selectedColor) {
+      this.storeService.selectedColor$.next(this.selectedColor);
       this.url = `https://interstate21.com/tesla-app/images/${this.selectedModel}/${this.selectedColor}.jpg`;
       this.buttonActiveService.step2Active$.next(true);
     } else {
