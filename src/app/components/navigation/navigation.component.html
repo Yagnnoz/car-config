@@ -21,6 +21,7 @@
     type="button"
     [ngClass]="(step3Active$ | async) ? '':'disabled'"
     [disabled]="(step3Active$ | async) == false"
+    routerLink="/summary"
     id="step3"
   >
     Step 3
