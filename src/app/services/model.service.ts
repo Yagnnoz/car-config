@@ -16,7 +16,6 @@ export class ModelService {
   }
 
   getModelColors(code: string): Observable<ModelColor[]> {
-    console.log('code is: ', code);
     return this.http.get<CarModel[]>('/models').pipe(
       map(models => {
           const model = models.find(model => model.code === code);

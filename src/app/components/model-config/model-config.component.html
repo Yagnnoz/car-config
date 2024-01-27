@@ -2,29 +2,44 @@
 
 <div class="form-container">
   <label for="configSelect">Config:</label>
-  <select
-    id="configSelect">
+  <ng-container *ngIf="availableConfiguration$ | async; let options">
+    <select
+      [(ngModel)]="selectedConfigId"
+      (change)="configurationChange()"
+      id="configSelect">
 
-    <option>BEEP</option>
+      <option *ngFor="let config of options.configs" [value]="config.id">{{ config.description }}</option>
+    </select>
 
-  </select>
-  <div class="option-details">
-    <!--        TODO: show details of selected option here-->
+    <ng-container *ngIf="selectedConfiguration$ | async; let selectedConfig">
+      <div class="option-details">
 
-    <div class="checkbox-container">
-      <label for="beep">Tow Yike:</label>
-      <input
-        type="checkbox"
-        id="beep"/>
-    </div>
+        <div class="option-row">
+          <p>
+            Range: {{ selectedConfig.range }} miles -
+            Max speed: {{ selectedConfig.speed }} -
+            Cost: {{ selectedConfig.price | currency }}
+          </p>
+        </div>
 
-    <div class="checkbox-container">
-      <label for="beep2">Steering Wheel</label>
-      <input
-        type="checkbox"
-        id="beep2"/>
-    </div>
-  </div>
+        <div
+          *ngIf="options.towHitch"
+          class="checkbox-container">
+          <label for="includeTow">Tow Hitch?</label>
+          <input
+            type="checkbox"
+            id="includeTow"/>
+        </div>
 
-
+        <div
+          *ngIf="options.yoke"
+          class="checkbox-container">
+          <label for="includeYoke">Yoke steering wheel?</label>
+          <input
+            type="checkbox"
+            id="includeYoke"/>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
 </div>
