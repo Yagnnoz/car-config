@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CarStoreService } from '../../services/car-store.service';
 import { CarConfig, CarOptions } from '../../types/car-options.type';
 import { Observable, Subscription, switchMap } from 'rxjs';
@@ -29,15 +29,14 @@ export class ModelConfigComponent implements OnDestroy {
   isTowSelected = false;
   isYokeSelected = false;
 
-  carModelCode: string;
+  carModelCode: string = '';
 
   constructor(
     private readonly storeService: CarStoreService,
     private readonly configService: ConfigService,
     private readonly validButtonService: ValidButtonsService,
   ) {
-    this.carModelCode = this.storeService.selectedCarModel$.value;
-
+    this.loadValuesFromStorage();
     this.carModelSub = this.storeService.selectedCarModel$.subscribe(
       data => this.availableConfiguration$ = this.configService.getConfigurationForCode(data)
     );
@@ -66,6 +65,13 @@ export class ModelConfigComponent implements OnDestroy {
   yokeSelectionChange() {
     this.storeService.isYokeSelected$.next(this.isYokeSelected);
     this.configurationChange();
+  }
+
+  loadValuesFromStorage(): void {
+    this.carModelCode = this.storeService.selectedCarModel$.value;
+    this.selectedConfigId = this.storeService.selectedConfigurationId$.value.toString();
+    this.isYokeSelected = this.storeService.isYokeSelected$.value;
+    this.isTowSelected = this.storeService.isTowSelected$.value;
   }
 
   ngOnDestroy() {
