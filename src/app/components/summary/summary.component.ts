@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from "rxjs";
+import { combineLatest, map, Observable } from "rxjs";
 import { ModelSelection } from "../../types/car-model.type";
 import { CarStoreService } from "../../services/car-store.service";
 import { CommonModule } from "@angular/common";
@@ -23,6 +23,15 @@ export class SummaryComponent {
   ) {
     this.selectedModel$ = this.storeService.selectedModel$;
     this.selectedConfiguration$ = this.storeService.selectedConfiguration$;
-    this.totalCost$ = this.storeService.totalCost$;
+
+    this.totalCost$ = combineLatest([this.selectedModel$, this.selectedConfiguration$]).pipe(
+      map(([model, config]) => {
+        return config.config.price +
+          model.color.price +
+          (config.yokeActive ? 1000 : 0) +
+          (config.towHitchActive ? 1000 : 0);
+      })
+    )
+
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, ReplaySubject, take, tap } from 'rxjs';
 import { ModelSelection } from "../types/car-model.type";
 import { ModelService } from "./model.service";
 import { ConfigurationSelection } from "../types/car-options.type";
@@ -16,42 +16,29 @@ export class CarStoreService {
   isYokeSelected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isTowSelected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  selectedModel$: Observable<ModelSelection> = new Observable<ModelSelection>();
-  selectedConfiguration$: Observable<ConfigurationSelection> = new Observable<ConfigurationSelection>();
-
-  totalCost$: Observable<number> = new Observable<number>()
+  selectedModel$: ReplaySubject<ModelSelection> = new ReplaySubject<ModelSelection>(1);
+  selectedConfiguration$: ReplaySubject<ConfigurationSelection> = new ReplaySubject<ConfigurationSelection>(1);
 
   constructor(
     private readonly modelService: ModelService,
     private readonly configService: ConfigService,
-  ) {
-    this.totalCost$ = combineLatest([this.selectedConfiguration$, this.isYokeSelected$, this.isTowSelected$]).pipe(
-      map(([config, yoke, tow]) => {
-          let result = config.config.price;
-          if (yoke) {
-            result += 1000;
-          }
-          if (tow) {
-            result += 1000;
-          }
-          return result;
-        }
-      ),
-      tap(console.log),
-    )
-  }
+  ) {}
 
   resetConfiguration() {
     this.selectedConfigurationId$.next(0);
   }
 
   saveModel(modelCode: string, colorCode: string, url: string): void {
-    this.selectedModel$ = this.modelService.getFullModelConfiguration(modelCode, colorCode, url);
+    this.modelService.getFullModelConfiguration(modelCode, colorCode, url).pipe(
+      take(1),
+    ).subscribe(data => this.selectedModel$.next(data))
     this.resetConfiguration();
   }
 
   saveConfiguration(configId: number, towSelected: boolean, yokeSelected: boolean) {
-    this.selectedConfiguration$ = this.configService.getFullConfiguration(this.selectedCarModel$.value, configId, yokeSelected, towSelected);
+    this.configService.getFullConfiguration(this.selectedCarModel$.value, configId, yokeSelected, towSelected).pipe(
+      take(1),
+    ).subscribe(data => this.selectedConfiguration$.next(data));
   }
 
 }
