@@ -14,6 +14,4 @@ FROM nginx:1.25.2-alpine
 COPY --from=build /usr/local/app/dist/tesla-configurator/browser /usr/share/nginx/html
 COPY --from=build /usr/local/app/nginx-config/default.conf /etc/nginx/conf.d
 
-RUN rm /usr/share/nginx/html/mockServiceWorker.js
-
 EXPOSE 80
