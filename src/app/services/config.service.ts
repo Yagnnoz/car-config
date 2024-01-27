@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CarConfig, CarOptions } from '../types/car-options.type';
-import { map, NEVER, Observable, Subscription, switchMap, tap } from 'rxjs';
+import { CarConfig, CarOptions, ConfigurationSelection } from '../types/car-options.type';
+import { combineLatest, map, NEVER, Observable, Subscription, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CarStoreService } from "./car-store.service";
 
@@ -9,22 +9,9 @@ import { CarStoreService } from "./car-store.service";
 })
 export class ConfigService {
 
-  availableConfigurations$!: Observable<CarOptions>;
-  selectedConfig$!: Observable<CarConfig>;
-
-  carModelSub: Subscription;
-
   constructor(
     private http: HttpClient,
-    private storageService: CarStoreService
-  ) {
-    this.carModelSub = this.storageService.selectedCarModel$.subscribe(
-      data => this.availableConfigurations$ = this.getConfigurationForCode(data));
-    this.selectedConfig$ = this.storageService.selectedConfigurationId$.pipe(
-      switchMap(configId => this.getSingleConfiguration(this.storageService.selectedCarModel$.value, configId)),
-    )
-  }
-
+  ) {}
 
   getConfigurationForCode(code: string): Observable<CarOptions> {
     return this.http.get<CarOptions>(`/options/${code}`);
@@ -42,5 +29,24 @@ export class ConfigService {
     } else {
       return NEVER;
     }
+  }
+
+  getFullConfiguration(modelCode: string,
+    configId: number,
+    yoke: boolean,
+    tow: boolean
+  ): Observable<ConfigurationSelection> {
+    return this.http.get<CarOptions>(`/options/${modelCode}`).pipe(
+      map(allOptions => {
+        const selectedConfiguration = allOptions.configs.filter(config => config.id === configId)[0];
+        const result: ConfigurationSelection = {
+          config: selectedConfiguration,
+          yokeActive: yoke,
+          towHitchActive: tow,
+        };
+        return result;
+      })
+    )
+
   }
 }

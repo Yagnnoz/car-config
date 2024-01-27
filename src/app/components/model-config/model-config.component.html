@@ -28,6 +28,8 @@
           <label for="includeTow">Tow Hitch?</label>
           <input
             type="checkbox"
+            [(ngModel)]="isTowSelected"
+            (change)="towSelectionChange()"
             id="includeTow"/>
         </div>
 
@@ -37,6 +39,8 @@
           <label for="includeYoke">Yoke steering wheel?</label>
           <input
             type="checkbox"
+            [(ngModel)]="isYokeSelected"
+            (change)="yokeSelectionChange()"
             id="includeYoke"/>
         </div>
       </div>

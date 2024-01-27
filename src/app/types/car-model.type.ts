@@ -9,3 +9,10 @@ export type ModelColor = {
   description: string;
   price: number;
 };
+
+export type ModelSelection = {
+  code: string;
+  description: string;
+  color: ModelColor;
+  imgUrl: string;
+}

@@ -11,3 +11,10 @@ export type CarConfig = {
   speed: number;
   price: number;
 }
+
+
+export type ConfigurationSelection = {
+  config: CarConfig;
+  towHitchActive: boolean;
+  yokeActive: boolean;
+}

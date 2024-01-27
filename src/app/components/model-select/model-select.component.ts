@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { CarModel, ModelColor } from '../../types/car-model.type';
 import { ModelService } from '../../services/model.service';
@@ -34,7 +34,7 @@ export class ModelSelectComponent implements OnInit {
 
   ngOnInit() {
     this.storeService.resetConfiguration();
-    this.allModels$ = this.modelService.models$;
+    this.allModels$ = this.modelService.availableModels$;
     this.availableColors$ = this.storeService.selectedCarModel$.pipe(
       switchMap(modelCode => this.modelService.getModelColors(modelCode))
     )
@@ -44,6 +44,8 @@ export class ModelSelectComponent implements OnInit {
     if (this.selectedModel && this.selectedColor) {
       this.storeService.selectedColor$.next(this.selectedColor);
       this.url = `https://interstate21.com/tesla-app/images/${this.selectedModel}/${this.selectedColor}.jpg`;
+
+      this.storeService.saveModel(this.selectedModel, this.selectedColor, this.url);
       this.buttonActiveService.step2Active$.next(true);
     } else {
       this.url = '';
