@@ -63,6 +63,7 @@ jobs:
             IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" |tail -n 1)
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull $IMAGE_TAG
+            docker stop tesla-config-cert
             docker run -d --rm \
             --name tesla-config-cert \
             -e VIRTUAL_HOST=cert.yagnnoz.de \
