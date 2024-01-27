@@ -19,6 +19,9 @@ export class CarStoreService {
   selectedModel$: ReplaySubject<ModelSelection> = new ReplaySubject<ModelSelection>(1);
   selectedConfiguration$: ReplaySubject<ConfigurationSelection> = new ReplaySubject<ConfigurationSelection>(1);
 
+  step2Active$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  step3Active$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(
     private readonly modelService: ModelService,
     private readonly configService: ConfigService,

@@ -5,7 +5,6 @@ import { Observable, Subscription, switchMap } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
 import { AsyncPipe, CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { ValidButtonsService } from "../../services/valid-buttons.service";
 
 @Component({
   selector: 'app-model-config',
@@ -34,7 +33,6 @@ export class ModelConfigComponent implements OnDestroy {
   constructor(
     private readonly storeService: CarStoreService,
     private readonly configService: ConfigService,
-    private readonly validButtonService: ValidButtonsService,
   ) {
     this.loadValuesFromStorage();
     this.carModelSub = this.storeService.selectedCarModel$.subscribe(
@@ -51,9 +49,9 @@ export class ModelConfigComponent implements OnDestroy {
       const configIdAsNumber = +this.selectedConfigId;
       this.storeService.selectedConfigurationId$.next(configIdAsNumber);
       this.storeService.saveConfiguration(configIdAsNumber, this.isTowSelected, this.isYokeSelected);
-      this.validButtonService.step3Active$.next(true);
+      this.storeService.step3Active$.next(true);
     } else {
-      this.validButtonService.step3Active$.next(false);
+      this.storeService.step3Active$.next(false);
     }
   }
 

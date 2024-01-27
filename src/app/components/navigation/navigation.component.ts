@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { AsyncPipe, NgClass } from "@angular/common";
-import { ValidButtonsService } from "../../services/valid-buttons.service";
 import { BehaviorSubject } from "rxjs";
 import { RouterLink } from "@angular/router";
+import { CarStoreService } from "../../services/car-store.service";
 
 @Component({
   selector: 'app-navigation',
@@ -22,10 +22,10 @@ export class NavigationComponent {
 
 
   constructor(
-    private buttonValidService: ValidButtonsService
+    private storageService: CarStoreService,
   ) {
-    this.step2Active$ = this.buttonValidService.step2Active$;
-    this.step3Active$ = this.buttonValidService.step3Active$;
+    this.step2Active$ = this.storageService.step2Active$;
+    this.step3Active$ = this.storageService.step3Active$;
 
   }
 
