@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { CarModel, ModelColor } from '../../types/car-model.type';
 import { ModelService } from '../../services/model.service';
@@ -38,6 +38,9 @@ export class ModelSelectComponent implements OnInit {
     this.availableColors$ = this.storeService.selectedCarModel$.pipe(
       switchMap(modelCode => this.modelService.getModelColors(modelCode))
     )
+    this.selectedModel = this.storeService.selectedCarModel$.value;
+    this.selectedColor = this.storeService.selectedColor$.value;
+    this.colorChange();
   }
 
   colorChange() {
