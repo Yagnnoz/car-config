@@ -32,6 +32,8 @@ export class CarStoreService {
 
   resetConfiguration() {
     this.selectedConfigurationId$.next(0);
+    this.selectedConfiguration$.next({} as ConfigurationSelection);
+    this.step3Active$.next(false);
     this.isYokeSelected$.next(false);
     this.isTowSelected$.next(false);
   }
