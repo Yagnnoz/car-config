@@ -12,6 +12,7 @@ export class CarStoreService {
 
   selectedCarModel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   selectedColor$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  imageUrl$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   selectedConfigurationId$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   isYokeSelected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isTowSelected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -26,6 +27,7 @@ export class CarStoreService {
     private readonly modelService: ModelService,
     private readonly configService: ConfigService,
   ) {
+
   }
 
   resetConfiguration() {
@@ -35,6 +37,7 @@ export class CarStoreService {
   }
 
   saveModel(modelCode: string, colorCode: string, url: string): void {
+    this.imageUrl$.next(url);
     this.modelService.getFullModelConfiguration(modelCode, colorCode, url).pipe(
       take(1),
     ).subscribe(data => this.selectedModel$.next(data))

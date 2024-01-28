@@ -8,7 +8,7 @@
       (change)="configurationChange()"
       id="configSelect">
 
-      <option *ngFor="let config of options.configs" [value]="config.id">{{ config.description }}</option>
+      <option *ngFor="let config of options.configs" [value]="config.id.toString()">{{ config.description }}</option>
     </select>
 
     <ng-container *ngIf="selectedConfiguration$ | async; let selectedConfig">

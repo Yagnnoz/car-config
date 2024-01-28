@@ -7,7 +7,7 @@
     [(ngModel)]="selectedModel"
     id="modelSelect">
 
-    <option *ngFor="let model of allModels$ | async" [value]="model.code">{{ model.code }}</option>
+    <option *ngFor="let model of allModels$ | async" [value]="model.code">{{ model.description }}</option>
   </select>
 
   <label for="colorSelect">Color:</label>

@@ -5,6 +5,7 @@ import { CarModel, ModelColor } from '../../types/car-model.type';
 import { ModelService } from '../../services/model.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CarStoreService } from '../../services/car-store.service';
+import { ConfigurationSelection } from "../../types/car-options.type";
 
 @Component({
   selector: 'app-model-select',
@@ -21,24 +22,23 @@ export class ModelSelectComponent implements OnInit {
 
   url: string = '';
 
-  selectedModel: string = '';
-  selectedColor: string = '';
+  selectedModel: string;
+  selectedColor: string;
 
   constructor(
     private readonly modelService: ModelService,
     private readonly storeService: CarStoreService,
   ) {
+    this.selectedModel = this.storeService.selectedCarModel$.value;
+    this.selectedColor = this.storeService.selectedColor$.value;
+    this.url = this.storeService.imageUrl$.value;
   }
 
   ngOnInit() {
-    this.storeService.resetConfiguration();
     this.allModels$ = this.modelService.availableModels$;
     this.availableColors$ = this.storeService.selectedCarModel$.pipe(
       switchMap(modelCode => this.modelService.getModelColors(modelCode))
     )
-    this.selectedModel = this.storeService.selectedCarModel$.value;
-    this.selectedColor = this.storeService.selectedColor$.value;
-    this.colorChange();
   }
 
   colorChange() {
@@ -56,6 +56,7 @@ export class ModelSelectComponent implements OnInit {
 
   modelChange(selectedModel: string): void {
     this.storeService.selectedCarModel$.next(selectedModel);
+    this.storeService.resetConfiguration();
     this.colorChange();
   }
 
