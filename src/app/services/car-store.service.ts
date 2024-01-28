@@ -25,10 +25,13 @@ export class CarStoreService {
   constructor(
     private readonly modelService: ModelService,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+  }
 
   resetConfiguration() {
     this.selectedConfigurationId$.next(0);
+    this.isYokeSelected$.next(false);
+    this.isTowSelected$.next(false);
   }
 
   saveModel(modelCode: string, colorCode: string, url: string): void {
